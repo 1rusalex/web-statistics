@@ -1,7 +1,6 @@
 package ru.rusalex.statistic.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.rusalex.statistic.DTO.ComplexAttendance;
@@ -10,12 +9,9 @@ import ru.rusalex.statistic.model.Attendance;
 import ru.rusalex.statistic.model.Page;
 import ru.rusalex.statistic.model.Person;
 import ru.rusalex.statistic.repository.AttendanceRepository;
-import ru.rusalex.statistic.repository.PageRepository;
 import ru.rusalex.statistic.repository.PersonRepository;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
 
 @Service
 public class AttendanceService {
@@ -30,13 +26,12 @@ public class AttendanceService {
     PageService pageService;
 
     @Transactional
-    @Async
-    public CompletableFuture<PersonalAttendance> addVisitAndGetPersonalAttendance(String personName, String pageAddress) {
+    public PersonalAttendance addVisitAndGetPersonalAttendance(String personName, String pageAddress) {
         Page page = pageService.getOrCreatePage(pageAddress);
         Person person = personRepository.findByLogin(personName);
         if (person != null) {
             addVisit(person, page);
-            return CompletableFuture.completedFuture(getPersonalAttendanceByPage(person, page));
+            return getPersonalAttendanceByPage(person, page);
         } else {
             throw new IllegalArgumentException("person name is incorrect.");
         }

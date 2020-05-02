@@ -20,22 +20,7 @@ public class Person {
     @Column(nullable = false)
     private String password;
 
-    /*@ManyToMany
-    private final List<Role> roles = new ArrayList<>();
-
-    public Collection<Role> getRoles() {
-        return roles;
-    }*/
-
     private String roles;
-
-    @OneToMany(
-            fetch = FetchType.LAZY,
-            mappedBy = "person"
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true
-    )
-    private List<Attendance> attendances;
 
     public Person(String login, String password, String roles) {
         this.login = login;

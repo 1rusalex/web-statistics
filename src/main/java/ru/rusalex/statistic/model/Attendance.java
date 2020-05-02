@@ -14,12 +14,12 @@ public class Attendance {
     @Column
     private LocalDateTime dateTime;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id"/*, nullable=false*/)
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "user_id", nullable=false)
     private Person person;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "page_id"/*, nullable=false*/)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "page_id", nullable=false)
     private Page page;
 
     public Attendance(LocalDateTime dateTime, Person person, Page page) {
@@ -44,5 +44,9 @@ public class Attendance {
 
     public Page getPage() {
         return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
     }
 }
